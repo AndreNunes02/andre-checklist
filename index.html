@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>André Checklist — 8-Month Protocol</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        darkbg: '#0a0e17',
+                        cardbg: '#121824',
+                        icy: {
+                            400: '#38bdf8',
+                            500: '#00f2fe',
+                            600: '#4facfe',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Strict Mobile Base Setup */
+        html, body {
+            width: 100%;
+            max-width: 100vw;
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+            background-color: #0a0e17;
+            color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Glassmorphic Dark UI Elements */
+        .glass-card {
+            background: rgba(18, 24, 36, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 242, 254, 0.3);
+        }
+
+        /* Glowing Accent Styles */
+        .cyan-glow {
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.35);
+        }
+
+        .cyan-glow-text {
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+        }
+
+        .cyan-badge {
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid rgba(0, 242, 254, 0.4);
+            color: #00f2fe;
+        }
+
+        .cyan-gradient-text {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Square Checkbox Mechanics */
+        .custom-checkbox {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            border: 2px solid #334155;
+            background-color: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+            flex-shrink: 0;
+        }
+
+        .custom-checkbox:hover {
+            border-color: #00f2fe;
+            background-color: rgba(0, 242, 254, 0.05);
+        }
+
+        .custom-checkbox.checked {
+            background-color: #00f2fe;
+            border-color: #00f2fe;
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(51, 65, 85, 0.8);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #00f2fe;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between pb-10">
+
+    <div id="app-root" class="min-h-screen flex flex-col justify-between w-full">
+        
+        <!-- Top Navigation Header -->
+        <header class="border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40 w-full">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row justify-between items-center gap-3">
+                
+                <!-- App Branding -->
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl cyan-badge flex items-center justify-center cyan-glow">
+                        <i data-lucide="zap" class="w-5 h-5 text-[#00f2fe]"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white uppercase flex items-center gap-2">
+                            ANDRÉ <span class="cyan-gradient-text">CHECKLIST</span>
+                        </h1>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span class="text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider cyan-badge">
+                                8-Month Protocol
+                            </span>
+                            <span class="text-xs text-slate-400 font-medium hidden sm:inline">Nov 1, 2026 – Jun 30, 2027</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Controls -->
+                <div class="flex items-center gap-1.5 bg-slate-900/90 border border-slate-800 rounded-xl p-1.5 shadow-inner max-w-full overflow-x-auto custom-scrollbar">
+                    <button id="prev-day" class="p-2 text-slate-300 hover:text-[#00f2fe] hover:bg-slate-800 rounded-lg transition" title="Previous Day">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    </button>
+                    <button id="yesterday-btn" class="px-2.5 py-1 text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition">
+                        Yesterday
+                    </button>
+                    <div class="flex items-center gap-1.5 px-2.5 py-1 bg-slate-950/80 rounded-lg border border-slate-800">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-[#00f2fe]"></i>
+                        <input type="date" id="date-picker" class="bg-transparent text-xs font-semibold text-white focus:outline-none cursor-pointer">
+                    </div>
+                    <button id="today-btn" class="px-2.5 py-1 text-xs font-semibold cyan-badge rounded-lg transition">
+                        Today
+                    </button>
+                    <button id="next-day" class="p-2 text-slate-300 hover:text-[#00f2fe] hover:bg-slate-800 rounded-lg transition" title="Next Day">
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace Area -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 flex-grow w-full space-y-6">
+
+            <!-- Top Dashboard Key Metrics -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+                
+                <!-- Active Streak -->
+                <div class="rounded-2xl p-4 glass-card flex items-center gap-3 transition-all">
+                    <div class="p-2.5 bg-cyan-500/10 border border-[#00f2fe]/30 rounded-xl text-[#00f2fe] cyan-glow shrink-0">
+                        <i data-lucide="flame" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="text-[10px] sm:text-xs font-medium text-slate-400 uppercase tracking-wider">Active Streak</div>
+                        <div class="text-xl sm:text-2xl font-bold text-white mt-0.5">
+                            <span id="current-streak" class="text-[#00f2fe] cyan-glow-text">0</span> <span class="text-xs font-normal text-slate-400">days</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Best Streak -->
+                <div class="rounded-2xl p-4 glass-card flex items-center gap-3 transition-all">
+                    <div class="p-2.5 bg-indigo-500/10 border border-indigo-500/30 rounded-xl text-indigo-400 shrink-0">
+                        <i data-lucide="award" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="text-[10px] sm:text-xs font-medium text-slate-400 uppercase tracking-wider">Best Streak</div>
+                        <div class="text-xl sm:text-2xl font-bold text-white mt-0.5">
+                            <span id="best-streak" class="text-indigo-300">0</span> <span class="text-xs font-normal text-slate-400">days</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Completion Score -->
+                <div class="rounded-2xl p-4 glass-card flex items-center gap-3 transition-all">
+                    <div class="p-2.5 bg-blue-500/10 border border-[#4facfe]/30 rounded-xl text-[#4facfe] shrink-0">
+                        <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="text-[10px] sm:text-xs font-medium text-slate-400 uppercase tracking-wider">Selected Day</div>
+                        <div class="text-xl sm:text-2xl font-bold text-white mt-0.5">
+                            <span id="day-score-text">0/10</span>
+                            <span id="day-score-percent" class="text-xs font-medium text-[#00f2fe] ml-1">(0%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overall 8-Month Consistency -->
+                <div class="rounded-2xl p-4 glass-card flex items-center gap-3 transition-all">
+                    <div class="p-2.5 bg-teal-500/10 border border-teal-500/30 rounded-xl text-teal-300 shrink-0">
+                        <i data-lucide="trophy" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="text-[10px] sm:text-xs font-medium text-slate-400 uppercase tracking-wider">Overall Avg</div>
+                        <div class="text-xl sm:text-2xl font-bold text-white mt-0.5">
+                            <span id="overall-percentage" class="text-teal-300">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campaign Progress Timeline Bar -->
+            <div class="glass-card rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5 w-full md:w-auto">
+                    <i data-lucide="compass" class="w-4 h-4 text-[#00f2fe] shrink-0"></i>
+                    <div class="text-xs text-slate-300">
+                        Protocol Timeline: <span class="font-bold text-white">Nov 1, 2026</span> to <span class="font-bold text-white">Jun 30, 2027</span>
+                        <span id="protocol-days-elapsed" class="text-slate-400 block sm:inline sm:ml-2">(Day 1 of 242)</span>
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3 flex items-center gap-3">
+                    <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800 p-0.5">
+                        <div id="protocol-progress-bar" class="h-full rounded-full bg-gradient-to-r from-[#00f2fe] to-[#4facfe] cyan-glow transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    <span id="protocol-percent-text" class="text-xs font-bold text-[#00f2fe] w-10 text-right">0%</span>
+                </div>
+            </div>
+
+            <!-- Core Objectives & Reflection Panel -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Left: 10 Daily Objectives -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="glass-card rounded-2xl p-4 sm:p-5 space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                            <div>
+                                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                                    <i data-lucide="list-checks" class="w-5 h-5 text-[#00f2fe]"></i>
+                                    Daily Objectives
+                                </h2>
+                                <p class="text-xs text-slate-400 mt-0.5" id="active-date-display">Targets for Today</p>
+                            </div>
+                            <div>
+                                <span id="completion-status-badge" class="px-3 py-1 rounded-full text-xs font-bold cyan-badge cyan-glow inline-block">
+                                    0 / 10 Completed
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Daily Completion Progress Bar -->
+                        <div class="space-y-1">
+                            <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800 p-0.5">
+                                <div id="daily-progress-bar" class="h-full rounded-full bg-gradient-to-r from-[#00f2fe] to-[#4facfe] transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Checkbox Cards List (Sequential 01 - 10) -->
+                        <div id="checklist-container" class="space-y-2.5">
+                            <!-- Dynamically Generated Cards -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Daily Reflection Notes Log -->
+                <div class="space-y-6">
+                    <div class="glass-card rounded-2xl p-5 space-y-3">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i data-lucide="notebook-pen" class="w-4 h-4 text-[#00f2fe]"></i>
+                            Daily Log & Reflection
+                        </h3>
+                        <p class="text-xs text-slate-400">Record workout metrics, achievements, or notes for this date.</p>
+                        <textarea id="daily-notes" rows="8" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-[#00f2fe] transition resize-none custom-scrollbar" placeholder="Type daily notes or reflection here..."></textarea>
+                        <div class="flex justify-between items-center text-[11px] text-slate-500">
+                            <span id="notes-save-status">Auto-saved to LocalStorage</span>
+                            <button id="clear-notes-btn" class="hover:text-red-400 transition">Clear Note</button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-5 space-y-2.5">
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                            <i data-lucide="shield-check" class="w-4 h-4 text-[#00f2fe]"></i>
+                            Protocol Standard
+                        </h3>
+                        <div class="text-xs text-slate-300 space-y-1.5 leading-relaxed">
+                            <p><strong class="text-[#00f2fe]">Flexibility:</strong> Check off items as you complete them during your day.</p>
+                            <p><strong class="text-[#4facfe]">Streak Target:</strong> Complete at least 7 of 10 objectives daily to maintain an active streak day.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Protocol Performance Chart -->
+            <div class="glass-card rounded-2xl p-5 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                    <div>
+                        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5 text-[#00f2fe]"></i>
+                            Protocol Performance Analytics
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Toggle between monthly averages and habit completion rates</p>
+                    </div>
+                    <div class="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800">
+                        <button id="chart-tab-monthly" class="px-3 py-1 rounded-lg text-xs font-semibold cyan-badge transition">
+                            Monthly Average
+                        </button>
+                        <button id="chart-tab-habits" class="px-3 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">
+                            Habit Breakdown
+                        </button>
+                    </div>
+                </div>
+
+                <div class="h-60 sm:h-64 w-full relative">
+                    <canvas id="analyticsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- 8-Month Consistency Map Grid -->
+            <div class="glass-card rounded-2xl p-5 space-y-3">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                    <div>
+                        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i data-lucide="calendar-days" class="w-5 h-5 text-[#00f2fe]"></i>
+                            8-Month Consistency Map
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">November 1, 2026 to June 30, 2027 campaign grid</p>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-[11px] text-slate-400">
+                        <span>Less</span>
+                        <div class="w-3 h-3 rounded-sm bg-slate-900 border border-slate-800"></div>
+                        <div class="w-3 h-3 rounded-sm bg-cyan-950 border border-cyan-900"></div>
+                        <div class="w-3 h-3 rounded-sm bg-sky-800"></div>
+                        <div class="w-3 h-3 rounded-sm bg-[#4facfe]"></div>
+                        <div class="w-3 h-3 rounded-sm bg-[#00f2fe] cyan-glow"></div>
+                        <span>More</span>
+                    </div>
+                </div>
+
+                <!-- Grid wrapper with mobile scroll -->
+                <div class="overflow-x-auto custom-scrollbar pb-1">
+                    <div id="heatmap-grid" class="min-w-[720px] grid grid-cols-8 gap-2.5">
+                        <!-- Dynamic Month Columns -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Backup Controls -->
+            <div class="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-slate-950/90 border border-slate-800 text-xs">
+                <div class="flex items-center gap-2 text-slate-400">
+                    <i data-lucide="database" class="w-4 h-4 text-[#00f2fe]"></i>
+                    <span>All data automatically saved locally in your browser.</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="export-btn" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-[#00f2fe] text-slate-200 transition flex items-center gap-1.5 font-medium">
+                        <i data-lucide="download" class="w-3.5 h-3.5 text-[#00f2fe]"></i> Export JSON
+                    </button>
+                    <label class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-[#00f2fe] text-slate-200 transition flex items-center gap-1.5 font-medium cursor-pointer">
+                        <i data-lucide="upload" class="w-3.5 h-3.5 text-[#00f2fe]"></i> Import JSON
+                        <input type="file" id="import-input" accept=".json" class="hidden">
+                    </label>
+                    <button id="reset-btn" class="px-3 py-1.5 rounded-lg bg-red-950/40 border border-red-900/60 hover:bg-red-900/60 text-red-300 transition flex items-center gap-1.5 font-medium">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Reset All Data
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-xs text-slate-600">
+            <p>André Checklist — 8-Month Protocol (Nov 1, 2026 – Jun 30, 2027)</p>
+        </footer>
+
+    </div>
+
+    <!-- Application Controller Logic -->
+    <script>
+        // 10 Core Objectives Sequence
+        const HABITS = [
+            { id: "habit_1", num: "01", name: "Early Wake Up", icon: "alarm-clock", desc: "Wake up early and start the day right" },
+            { id: "habit_2", num: "02", name: "Drink 2L Water", icon: "droplet", desc: "Maintain optimal daily hydration" },
+            { id: "habit_3", num: "03", name: "Clean Diet", icon: "apple", desc: "Whole foods with no junk food or excess sugar" },
+            { id: "habit_4", num: "04", name: "Workout / Run", icon: "dumbbell", desc: "Physical training session or outdoor run" },
+            { id: "habit_5", num: "05", name: "Work", icon: "briefcase", desc: "Work on job, personal task/project, or learning goal" },
+            { id: "habit_6", num: "06", name: "No Alcohol", icon: "ban", desc: "Zero alcohol intake" },
+            { id: "habit_7", num: "07", name: "Family Time", icon: "home", desc: "Quality time with parents & family members" },
+            { id: "habit_8", num: "08", name: "Socializing", icon: "message-square", desc: "Texting friends, attending events, dinners & birthdays" },
+            { id: "habit_9", num: "09", name: "Read 10+ Pages", icon: "book-open", desc: "Focused reading session" },
+            { id: "habit_10", num: "10", name: "Evening Wind-Down", icon: "moon", desc: "Unwind routine and prepare for high recovery sleep" }
+        ];
+
+        // 8-Month Campaign Timeline
+        const PROTOCOL_START = new Date('2026-11-01T00:00:00');
+        const PROTOCOL_END = new Date('2027-06-30T00:00:00');
+
+        // State Variables
+        let selectedDate = new Date();
+        let appData = { logs: {} };
+        let activeChartMode = "monthly";
+        let chartInstance = null;
+
+        window.onload = function() {
+            loadStorageData();
+            setupDatePicker();
+            updateActiveDateView();
+            initChart();
+            lucide.createIcons();
+        };
+
+        function formatDateKey(dateObj) {
+            const y = dateObj.getFullYear();
+            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const d = String(dateObj.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        function loadStorageData() {
+            // 1. Tentar carregar do LocalStorage
+            try {
+                const saved = localStorage.getItem("andre_checklist_v5_data");
+                if (saved) {
+                    appData = JSON.parse(saved);
+                }
+            } catch (e) {
+                console.warn("LocalStorage bloqueado.");
+            }
+
+            // 2. Tentar carregar do Hash da URL (bypassa iframes do Google Sites)
+            try {
+                if (window.location.hash && window.location.hash.length > 1) {
+                    const decoded = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
+                    if (decoded && decoded.logs) {
+                        appData = decoded;
+                    }
+                }
+            } catch (err) {
+                console.warn("Erro ao ler hash da URL.");
+            }
+
+            if (!appData.logs) appData.logs = {};
+        }
+
+        function saveStorageData() {
+            // Guardar em LocalStorage
+            try {
+                localStorage.setItem("andre_checklist_v5_data", JSON.stringify(appData));
+            } catch (e) {}
+
+            // Guardar no URL Hash para persistir automaticamente no Google Sites
+            try {
+                const encoded = encodeURIComponent(JSON.stringify(appData));
+                history.replaceState(null, null, `#${encoded}`);
+            } catch (e) {}
+        }
+
+        function setupDatePicker() {
+            const dateInput = document.getElementById("date-picker");
+            dateInput.value = formatDateKey(selectedDate);
+
+            dateInput.addEventListener("change", (e) => {
+                if (e.target.value) {
+                    selectedDate = new Date(e.target.value + "T00:00:00");
+                    updateActiveDateView();
+                }
+            });
+
+            document.getElementById("prev-day").addEventListener("click", () => {
+                selectedDate.setDate(selectedDate.getDate() - 1);
+                updateActiveDateView();
+            });
+
+            document.getElementById("next-day").addEventListener("click", () => {
+                selectedDate.setDate(selectedDate.getDate() + 1);
+                updateActiveDateView();
+            });
+
+            document.getElementById("yesterday-btn").addEventListener("click", () => {
+                const y = new Date();
+                y.setDate(y.getDate() - 1);
+                selectedDate = y;
+                updateActiveDateView();
+            });
+
+            document.getElementById("today-btn").addEventListener("click", () => {
+                selectedDate = new Date();
+                updateActiveDateView();
+            });
+
+            // Notes Autosave
+            const notesTextarea = document.getElementById("daily-notes");
+            notesTextarea.addEventListener("input", (e) => {
+                const dateKey = formatDateKey(selectedDate);
+                if (!appData.logs[dateKey]) appData.logs[dateKey] = { habits: {}, note: "" };
+                appData.logs[dateKey].note = e.target.value;
+                saveStorageData();
+                document.getElementById("notes-save-status").textContent = "Auto-saved!";
+                setTimeout(() => {
+                    document.getElementById("notes-save-status").textContent = "Auto-saved to Link";
+                }, 2000);
+            });
+
+            document.getElementById("clear-notes-btn").addEventListener("click", () => {
+                notesTextarea.value = "";
+                const dateKey = formatDateKey(selectedDate);
+                if (appData.logs[dateKey]) {
+                    appData.logs[dateKey].note = "";
+                    saveStorageData();
+                }
+            });
+
+            document.getElementById("chart-tab-monthly").addEventListener("click", function() {
+                activeChartMode = "monthly";
+                this.className = "px-3 py-1 rounded-lg text-xs font-semibold cyan-badge transition";
+                document.getElementById("chart-tab-habits").className = "px-3 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition";
+                updateChart();
+            });
+
+            document.getElementById("chart-tab-habits").addEventListener("click", function() {
+                activeChartMode = "habits";
+                this.className = "px-3 py-1 rounded-lg text-xs font-semibold cyan-badge transition";
+                document.getElementById("chart-tab-monthly").className = "px-3 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition";
+                updateChart();
+            });
+
+            document.getElementById("export-btn").addEventListener("click", exportDataJSON);
+            document.getElementById("import-input").addEventListener("change", importDataJSON);
+            document.getElementById("reset-btn").addEventListener("click", resetData);
+        }
+
+        function updateActiveDateView() {
+            document.getElementById("date-picker").value = formatDateKey(selectedDate);
+            const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+            document.getElementById("active-date-display").textContent = selectedDate.toLocaleDateString('en-US', options);
+
+            renderChecklist();
+            renderNotes();
+            updateCalculations();
+            renderHeatmap();
+            updateChart();
+        }
+
+        function renderChecklist() {
+            const container = document.getElementById("checklist-container");
+            container.innerHTML = "";
+
+            const dateKey = formatDateKey(selectedDate);
+            const dayLog = appData.logs[dateKey] || { habits: {} };
+
+            let completedCount = 0;
+
+            HABITS.forEach((habit) => {
+                const isChecked = !!dayLog.habits[habit.id];
+                if (isChecked) completedCount++;
+
+                const habitCard = document.createElement("div");
+                habitCard.onclick = () => toggleHabit(habit.id);
+                habitCard.className = `p-3.5 rounded-xl border transition-all flex items-center justify-between gap-3 cursor-pointer select-none ${
+                    isChecked 
+                        ? 'bg-slate-900/90 border-[#00f2fe]/50 shadow-inner' 
+                        : 'bg-slate-950/50 border-slate-800/80 hover:border-slate-700'
+                }`;
+
+                habitCard.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 rounded-lg bg-slate-900 border border-slate-800 text-[11px] font-bold text-[#00f2fe] flex items-center justify-center shrink-0">
+                            ${habit.num}
+                        </div>
+                        <div class="p-1.5 rounded-lg bg-slate-900 border border-slate-800 text-[#00f2fe] shrink-0">
+                            <i data-lucide="${habit.icon}" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs sm:text-sm font-semibold ${isChecked ? 'line-through text-slate-400' : 'text-slate-100'}">
+                                ${habit.name}
+                            </div>
+                            <div class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">${habit.desc}</div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Checkbox -->
+                    <div class="custom-checkbox ${isChecked ? 'checked' : ''}">
+                        ${isChecked ? '<i data-lucide="check" class="w-4 h-4 text-slate-950 stroke-[3.5]"></i>' : ''}
+                    </div>
+                `;
+
+                container.appendChild(habitCard);
+            });
+
+            const percent = Math.round((completedCount / HABITS.length) * 100);
+            document.getElementById("completion-status-badge").textContent = `${completedCount} / ${HABITS.length} Completed`;
+            document.getElementById("daily-progress-bar").style.width = `${percent}%`;
+
+            document.getElementById("day-score-text").textContent = `${completedCount}/${HABITS.length}`;
+            document.getElementById("day-score-percent").textContent = `(${percent}%)`;
+
+            lucide.createIcons();
+        }
+
+        function renderNotes() {
+            const dateKey = formatDateKey(selectedDate);
+            const note = (appData.logs[dateKey] && appData.logs[dateKey].note) ? appData.logs[dateKey].note : "";
+            document.getElementById("daily-notes").value = note;
+        }
+
+        function toggleHabit(habitId) {
+            const dateKey = formatDateKey(selectedDate);
+            if (!appData.logs[dateKey]) appData.logs[dateKey] = { habits: {}, note: "" };
+
+            appData.logs[dateKey].habits[habitId] = !appData.logs[dateKey].habits[habitId];
+            saveStorageData();
+
+            renderChecklist();
+            updateCalculations();
+            renderHeatmap();
+            updateChart();
+        }
+
+        function updateCalculations() {
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            const totalDuration = Math.ceil((PROTOCOL_END - PROTOCOL_START) / (1000 * 60 * 60 * 24)) + 1;
+            let elapsed = Math.ceil((today - PROTOCOL_START) / (1000 * 60 * 60 * 24)) + 1;
+            if (elapsed < 1) elapsed = 1;
+            if (elapsed > totalDuration) elapsed = totalDuration;
+
+            const protocolPercent = Math.min(100, Math.max(0, Math.round((elapsed / totalDuration) * 100)));
+
+            document.getElementById("protocol-days-elapsed").textContent = `(Day ${elapsed} of ${totalDuration})`;
+            document.getElementById("protocol-progress-bar").style.width = `${protocolPercent}%`;
+            document.getElementById("protocol-percent-text").textContent = `${protocolPercent}%`;
+
+            let currentStreak = 0;
+            let bestStreak = 0;
+            let tempStreak = 0;
+
+            let iter = new Date(PROTOCOL_START);
+            const checkUntil = new Date();
+            checkUntil.setHours(0,0,0,0);
+
+            let totalCompletions = 0;
+            let totalPossible = 0;
+
+            while (iter <= checkUntil) {
+                const k = formatDateKey(iter);
+                const dayData = appData.logs[k];
+                let count = 0;
+
+                if (dayData && dayData.habits) {
+                    count = Object.values(dayData.habits).filter(Boolean).length;
+                }
+
+                totalCompletions += count;
+                totalPossible += HABITS.length;
+
+                if (count >= 6) { // 6 de 10 para streak ativa
+                    tempStreak++;
+                    if (tempStreak > bestStreak) bestStreak = tempStreak;
+                } else {
+                    tempStreak = 0;
+                }
+
+                iter.setDate(iter.getDate() + 1);
+            }
+
+            currentStreak = tempStreak;
+            document.getElementById("current-streak").textContent = currentStreak;
+            document.getElementById("best-streak").textContent = bestStreak;
+
+            const overallPercent = totalPossible > 0 ? Math.round((totalCompletions / totalPossible) * 100) : 0;
+            document.getElementById("overall-percentage").textContent = `${overallPercent}%`;
+        }
+
+        function renderHeatmap() {
+            const grid = document.getElementById("heatmap-grid");
+            grid.innerHTML = "";
+
+            const months = [
+                { name: "Nov", year: 2026, monthIndex: 10 },
+                { name: "Dec", year: 2026, monthIndex: 11 },
+                { name: "Jan", year: 2027, monthIndex: 0 },
+                { name: "Feb", year: 2027, monthIndex: 1 },
+                { name: "Mar", year: 2027, monthIndex: 2 },
+                { name: "Apr", year: 2027, monthIndex: 3 },
+                { name: "May", year: 2027, monthIndex: 4 },
+                { name: "Jun", year: 2027, monthIndex: 5 }
+            ];
+
+            months.forEach(m => {
+                const col = document.createElement("div");
+                col.className = "space-y-1";
+
+                const title = document.createElement("div");
+                title.className = "text-[10px] font-bold text-slate-400 border-b border-slate-800 pb-1 mb-1 text-center uppercase tracking-wider";
+                title.textContent = m.name;
+                col.appendChild(title);
+
+                const daysInMonth = new Date(m.year, m.monthIndex + 1, 0).getDate();
+                const dayGrid = document.createElement("div");
+                dayGrid.className = "grid grid-cols-5 gap-1";
+
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dateObj = new Date(m.year, m.monthIndex, d);
+                    const dateKey = formatDateKey(dateObj);
+                    const dayLog = appData.logs[dateKey];
+                    let completed = 0;
+
+                    if (dayLog && dayLog.habits) {
+                        completed = Object.values(dayLog.habits).filter(Boolean).length;
+                    }
+
+                    const cell = document.createElement("div");
+                    cell.title = `${m.name} ${d}: ${completed}/${HABITS.length} habits`;
+                    cell.onclick = () => {
+                        selectedDate = new Date(m.year, m.monthIndex, d);
+                        updateActiveDateView();
+                    };
+
+                    let bgClass = "bg-slate-900 border border-slate-800";
+                    if (completed >= 1 && completed <= 3) bgClass = "bg-cyan-950 border border-cyan-900";
+                    else if (completed >= 4 && completed <= 6) bgClass = "bg-sky-800 border border-sky-700";
+                    else if (completed >= 7 && completed <= 9) bgClass = "bg-[#4facfe] border border-[#00f2fe]";
+                    else if (completed === HABITS.length) bgClass = "bg-[#00f2fe] border border-white cyan-glow";
+
+                    const isSelected = formatDateKey(selectedDate) === dateKey;
+                    const selectedRing = isSelected ? "ring-2 ring-white scale-110 z-10" : "";
+
+                    cell.className = `w-3 h-3 rounded-sm cursor-pointer transition-all ${bgClass} ${selectedRing}`;
+                    dayGrid.appendChild(cell);
+                }
+
+                col.appendChild(dayGrid);
+                grid.appendChild(col);
+            });
+        }
+
+        function initChart() {
+            const ctx = document.getElementById("analyticsChart").getContext("2d");
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Completion %',
+                        data: [],
+                        backgroundColor: 'rgba(0, 242, 254, 0.35)',
+                        borderColor: '#00f2fe',
+                        borderWidth: 1.5,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(18, 24, 36, 0.95)',
+                            titleColor: '#f8fafc',
+                            bodyColor: '#00f2fe',
+                            borderColor: 'rgba(0, 242, 254, 0.4)',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: 'rgba(51, 65, 85, 0.3)' },
+                            ticks: { color: '#94a3b8', font: { size: 10 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8', font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+
+            updateChart();
+        }
+
+        function updateChart() {
+            if (!chartInstance) return;
+
+            if (activeChartMode === "monthly") {
+                const months = [
+                    { label: "Nov", year: 2026, monthIndex: 10 },
+                    { label: "Dec", year: 2026, monthIndex: 11 },
+                    { label: "Jan", year: 2027, monthIndex: 0 },
+                    { label: "Feb", year: 2027, monthIndex: 1 },
+                    { label: "Mar", year: 2027, monthIndex: 2 },
+                    { label: "Apr", year: 2027, monthIndex: 3 },
+                    { label: "May", year: 2027, monthIndex: 4 },
+                    { label: "Jun", year: 2027, monthIndex: 5 }
+                ];
+
+                const labels = months.map(m => m.label);
+                const data = months.map(m => {
+                    const daysInMonth = new Date(m.year, m.monthIndex + 1, 0).getDate();
+                    let monthDone = 0;
+                    let monthTotal = daysInMonth * HABITS.length;
+
+                    for (let d = 1; d <= daysInMonth; d++) {
+                        const dateKey = formatDateKey(new Date(m.year, m.monthIndex, d));
+                        const dayLog = appData.logs[dateKey];
+                        if (dayLog && dayLog.habits) {
+                            monthDone += Object.values(dayLog.habits).filter(Boolean).length;
+                        }
+                    }
+                    return Math.round((monthDone / monthTotal) * 100);
+                });
+
+                chartInstance.data.labels = labels;
+                chartInstance.data.datasets[0].data = data;
+                chartInstance.data.datasets[0].backgroundColor = 'rgba(0, 242, 254, 0.35)';
+                chartInstance.data.datasets[0].borderColor = '#00f2fe';
+            } else {
+                const labels = HABITS.map(h => h.name);
+                const loggedKeys = Object.keys(appData.logs);
+                const totalDaysLogged = loggedKeys.length || 1;
+
+                const data = HABITS.map(h => {
+                    let timesCompleted = 0;
+                    loggedKeys.forEach(k => {
+                        if (appData.logs[k].habits && appData.logs[k].habits[h.id]) {
+                            timesCompleted++;
+                        }
+                    });
+                    return Math.round((timesCompleted / totalDaysLogged) * 100);
+                });
+
+                chartInstance.data.labels = labels;
+                chartInstance.data.datasets[0].data = data;
+                chartInstance.data.datasets[0].backgroundColor = 'rgba(79, 172, 254, 0.35)';
+                chartInstance.data.datasets[0].borderColor = '#4facfe';
+            }
+
+            chartInstance.update();
+        }
+
+        function exportDataJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `andre_checklist_backup_${formatDateKey(new Date())}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importDataJSON(event) {
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (parsed && parsed.logs) {
+                        appData = parsed;
+                        saveStorageData();
+                        updateActiveDateView();
+                    }
+                } catch (err) {
+                    console.error("Invalid JSON format");
+                }
+            };
+            if (event.target.files[0]) {
+                fileReader.readAsText(event.target.files[0]);
+            }
+        }
+
+        function resetData() {
+            if (confirm("Reset all protocol logs and progress? This action cannot be undone.")) {
+                appData = { logs: {} };
+                saveStorageData();
+                updateActiveDateView();
+            }
+        }
+    </script>
+</body>
+</html>
